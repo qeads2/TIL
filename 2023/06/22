@@ -1,0 +1,48 @@
+## 도메인 주도 설계 (DDD) 스터디 14장 - 전략적 설계
+
+Bounded Context
+
+- 동일한 유비쿼터스 랭귀지가 적용될 수 있는 모델들의 논리적인 집합
+
+Context Map
+
+- 컨텍스트 간의 관계를 가시적으로 표현하는 도식
+
+### Suplier/Consumer Model
+
+Context 간에 (팀) 협업하는 형태가 상/하위 개념으로 구분되어 있는 형태. 대다수의 조직이 취하는 형태이다.
+
+이 때, 두 조직이 협업하는 형태는 크게 3가지의 형태로 나타난다.
+
+- Shared Kernal
+    - 모델을 서로 공유해서 사용하는 형태.
+        - ex)
+            - Jar 를 공유하여 사용
+            - 공통된 모듈을 사용
+            - 서로 다른 어플리케이션이지만 같은 데이터베이스를 사용
+- Conformist (준수자)
+    - 상위 팀의 스펙에 따라서 하위 팀이 의존하는 형태지만, 하위 팀에서 특별한 요청없이 현재 스펙을 따라감
+- ~~Hosting on Service~~ Open Host Service - Published Language
+    - XML, JSON과 같이 규약 언어 형태로 스펙을 제공하는 상태
+    - 기존에 많은 백엔드와 프론트엔드의 통신 형태
+
+상/하위 팀에 의존하지 않고 별도로 구현해 사용하는 것을 Separate Ways라고 표현함
+
+### 놓친 부분
+- Anticorruption Layer
+
+도메인 A, B가 속한 각각의 Bounded Context가 있다고 가정할 때, 두 Bounded Context간의 통신을 조정하는 부분을 Anticorruption Layer로 볼 수 있다. Spring 기반 어플리케이션에서 흔하게 보이는 Service Layer와 같다. 두 컨텍스트의 데이터를 조절해서 다른 클라이언트에게 제공하는 역할을 한다.
+
+http://wiki.coola.vipserv.org/the_structure_of_an_anti-corruption_layer.png
+
+### ETC
+작은 규모의 팀은 프론트&백엔드 모노레포로 가도 충분하다.
+
+모노레포일 때 얻는 이득이 생각보다 클 듯
+
+- 백엔드 API Spec도 code generate로 프론트에 제공할 수 있음
+- 언어가 달라도 가능
+
+개념을 찢는 것 보다 합치는게 훨씬 비용이 크다.
+
+섣부르게 개념을 찢어두려고 하지말고, 통합된 환경에서 시작하되 확실하게 도메인 모델이 보일 때 시도하는 게 좋음 (이 시도 조차도 매우 나중에 해도 된다. 우버도 오랜기간동안 모노레포로 유지했었음)
